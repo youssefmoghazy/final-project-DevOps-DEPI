@@ -1,0 +1,39 @@
+# react-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-deployment
+  namespace: finalns
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: react
+  template:
+    metadata:
+      labels:
+        app: react
+    spec:
+      containers:
+      - name: react-container
+        image: emanabdelhamed241/react-app-final:latest
+        ports:
+        - containerPort: 3000
+
+---
+# react-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: react-service
+  namespace: finalns
+
+spec:
+  type: NodePort
+  selector:
+    app: react
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30000
